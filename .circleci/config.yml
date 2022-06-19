@@ -1,4 +1,5 @@
 version: 2.1
+
 jobs:
   print_hello:
     docker:
@@ -7,4 +8,4 @@ jobs:
       - checkout
       - run:
           name: "Say hello"
-          command: "echo Hello, World!""
+          command: "echo Hello, World!"
