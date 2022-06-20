@@ -39,4 +39,5 @@ workflows:
       - print_hello
       - install_linters
       - lint_project_files
+        requires: [install_linters]
    
