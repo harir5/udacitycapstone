@@ -20,8 +20,10 @@ jobs:
                     sudo apt get tidy &&\
                     sudo wget -O /bin/hadolint https://github.com/hadolint/hadolint/releases/download/v1.16.3/hadolint-Linux-x86_64 &&\
                     sudo chmod +x /bin/hadolint &&\
-                    hadolint Dockerfile
-  lint_html_files:
+                    sudo wget -O https://github.com/htacg/tidy-html5/releases/download/5.4.0/tidy-5.4.0-64bit.deb &&\
+                    sudo dpkg -i tidy-5.4.0-64bit.deb
+                    
+  lint_project_files:
     docker:
       - image: cimg/base:2022.06
     steps:
@@ -29,7 +31,8 @@ jobs:
       - run:
           name: lint-html
           command: |
-                    tidy -e -q *.html
+                   hadolint Dockerfile &&\
+                   tidy -e -q *.html
             
 workflows:
   default:
