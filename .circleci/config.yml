@@ -9,7 +9,7 @@ jobs:
           name: "Say hello"
           command: "echo Hello, World!"
           
-  install_linters:
+  install_linters_lint_files:
     docker:
       - image: cimg/base:2022.06
     steps:
@@ -20,24 +20,12 @@ jobs:
                     sudo apt-get update -y
                     sudo apt-get install -y tidy
                     sudo wget -O /bin/hadolint https://github.com/hadolint/hadolint/releases/download/v1.16.3/hadolint-Linux-x86_64 &&\
-                    sudo chmod +x /bin/hadolint
-                    
-  lint_project_files:
-    docker:
-      - image: cimg/base:2022.06
-    steps:
-      - checkout
-      - run:
-          name: lint-html
-          command: |
-                   hadolint Dockerfile &&\
-                   tidy -e -q *.html
+                    sudo chmod +x /bin/hadolint &&\
+                    hadolint Dockerfile
+                    tidy -e -q *.html
             
 workflows:
   default:
     jobs:
       - print_hello
-      - install_linters
-      - lint_project_files:
-          requires: [install_linters]
-   
+      - install_linters_lint_files
