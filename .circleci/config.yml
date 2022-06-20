@@ -20,6 +20,14 @@ jobs:
                     docker --version
                     docker build -t udacitycapstone .
                     docker image ls
+      -run:
+          name: Push app to docker hub
+          command: |
+                    dockerpath=harihr5/udacitycapstonerepo
+                    docker login -u harihr5
+                    docker tag udacitycapstone $dockerpath:udacitycapstone
+                    docker push $dockerpath:udacitycapstone
+  
   install_linters_lint_files:
     docker:
       - image: cimg/base:2022.06
