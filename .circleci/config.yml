@@ -1,11 +1,13 @@
 version: 2.1
 
 jobs:
-  print_hello:
-    docker:
-      - image: circleci/node:13.8.0
+  lint_files:
     steps:
-      - checkout
-      - run:
-          name: "Say hello"
-          command: "echo Hello, World!"
+    - checkout
+    - run:
+        name:'Install Hadolint'
+        command: |
+          wget -O /bin/hadolint https://github.com/hadolint/hadolint/releases/download/v1.16.3/hadolint-Linux-x86_64 &&\
+          chmod +x /bin/hadolint
+          hadolint Dockerfile
+   
