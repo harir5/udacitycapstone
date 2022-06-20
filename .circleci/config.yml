@@ -17,12 +17,12 @@ jobs:
       - run:
           name: install-linters
           command: |
-                    sudo apt-get update -y
-                    sudo apt-get install -y tidy
+                    # sudo apt-get update -y
+                    # sudo apt-get install -y tidy
                     sudo wget -O /bin/hadolint https://github.com/hadolint/hadolint/releases/download/v1.16.3/hadolint-Linux-x86_64 &&\
                     sudo chmod +x /bin/hadolint &&\
                     hadolint Dockerfile
-                    tidy -e -q *.html
+                    # tidy -e -q *.html
             
 workflows:
   default:
