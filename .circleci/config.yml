@@ -19,9 +19,7 @@ jobs:
           command: |
                     sudo apt get tidy &&\
                     sudo wget -O /bin/hadolint https://github.com/hadolint/hadolint/releases/download/v1.16.3/hadolint-Linux-x86_64 &&\
-                    sudo chmod +x /bin/hadolint &&\
-                    sudo wget -O https://github.com/htacg/tidy-html5/releases/download/5.4.0/tidy-5.4.0-64bit.deb &&\
-                    sudo dpkg -i tidy-5.4.0-64bit.deb
+                    sudo chmod +x /bin/hadolint
                     
   lint_project_files:
     docker:
