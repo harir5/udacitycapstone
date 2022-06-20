@@ -17,8 +17,6 @@ jobs:
           name: build files
           command: |
                     docker --version
-                    sudo service docker status
-                    sudo service docker start
                     docker build -t udacitycapstone .
                     docker image ls
   install_linters_lint_files:
