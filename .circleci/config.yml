@@ -8,7 +8,17 @@ jobs:
       - run:
           name: "Say hello"
           command: "echo Hello, World!"
-          
+  build-docker-app:
+    docker:
+      - image: docker:stable
+    steps:
+      - checkout
+      - run:
+          name: build files
+          command: |
+                    docker --version
+                    docker build -t udacitycapstone .
+                    docker image ls
   install_linters_lint_files:
     docker:
       - image: cimg/base:2022.06
@@ -28,4 +38,4 @@ workflows:
   default:
     jobs:
       - print_hello
-      - install_linters_lint_files
+      - build-docker-app
