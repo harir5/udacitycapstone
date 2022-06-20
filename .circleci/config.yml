@@ -24,7 +24,7 @@ jobs:
           name: Push app to docker hub
           command: |
                     dockerpath=harihr5/udacitycapstonerepo
-                    docker login -u harihr5 -p $ockerudacity
+                    docker login -u harihr5 --password $ockerudacity
                     docker tag udacitycapstone $dockerpath:udacitycapstone
                     docker push $dockerpath:udacitycapstone
   
