@@ -9,31 +9,23 @@ jobs:
           name: "Say hello"
           command: "echo Hello, World!"
           
-  install_hadolint:
+  install_hadolint_lint_dockerfile:
     docker:
       - image: cimg/base:2022.06
     steps:
       - checkout
       - run:
-          name: install-hadolint
+          name: install-hadolint-lint-dockerfile
           command: |
                     # Install hadolint
-                    wget -O /bin/hadolint https://github.com/hadolint/hadolint/releases/download/v1.16.3/hadolint-Linux-x86_64 &&\
-                    chmod +x /bin/hadolint
-  lint_files:
-    docker:
-      - image: cimg/base:2022.06
-    steps:
-      - checkout
-      - run:
-          name: run-hadolint
-          command: |
-                  hadolint Dockerfile
+                    sudo wget -O /bin/hadolint https://github.com/hadolint/hadolint/releases/download/v1.16.3/hadolint-Linux-x86_64 &&\
+                    chmod +x /bin/hadolint &&\
+                    hadolint Dockerfile
+                  
             
 workflows:
   default:
     jobs:
       - print_hello
-      - install_hadolint
-      - lint_files
+      - install_hadolint_lint_dockerfile
    
