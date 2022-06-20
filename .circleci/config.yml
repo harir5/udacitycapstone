@@ -20,7 +20,7 @@ jobs:
                     docker --version
                     docker build -t udacitycapstone .
                     docker image ls
-      -run:
+      - run:
           name: Push app to docker hub
           command: |
                     dockerpath=harihr5/udacitycapstonerepo
