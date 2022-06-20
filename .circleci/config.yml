@@ -17,9 +17,10 @@ jobs:
       - run:
           name: install-linters
           command: |
-                    sudo apt get tidy &&\
                     sudo wget -O /bin/hadolint https://github.com/hadolint/hadolint/releases/download/v1.16.3/hadolint-Linux-x86_64 &&\
-                    sudo chmod +x /bin/hadolint
+                    sudo chmod +x /bin/hadolint &&\
+                    sudo apt install tidy &&\
+                    sudo dpkg -i tidy-5.4.0-64bit.deb
                     
   lint_project_files:
     docker:
