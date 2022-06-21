@@ -17,17 +17,17 @@ jobs:
       - restore_cache:
           keys: [local-build]
       - run:
-         name:'install nginx'
+         name: 'install nginx'
          command: |
                   sudo apt-get update -y
                   sudo apt-get install -y nginx
-      -run:
-         name:'build-app-locally'
+      - run:
+         name: 'build-app-locally'
          command: |
                   sudo cp /app/nginx/nginx.conf /etc/nginx/nginx.conf
                   sudo cp /app/site-content/index.html /usr/share/nginx/html/index.html
-      -run:
-         name:'run-local-app'
+      - run:
+         name: 'run-local-app'
          command: |
                   sudo service nginx start
       -save_cache:
@@ -41,8 +41,8 @@ jobs:
       - checkout
       - restore_cache:
           keys: [local-build]
-      -run:
-         name:'test-local-app'
+      - run:
+         name: 'test-local-app'
          command: |
                   if [curl -s http://localhost:80/ | grep "Hello"]; then
                   return 1
