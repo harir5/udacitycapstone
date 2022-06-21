@@ -14,8 +14,8 @@ jobs:
       - image: cimg/base:2022.06
     steps:
       - checkout
-      - restore_cache:
-          keys: [local-build]
+      - attach_workspace:
+          at: ~/
       - run:
          name: 'install nginx'
          command: |
@@ -40,11 +40,8 @@ jobs:
                   then
                     echo "success"
                   else
-                    echo "fail"
+                    echo "fail"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
                   fi
-      - save_cache:
-         paths: [app/caches]
-         key: local-build
 
 
   install_linters:
@@ -52,31 +49,18 @@ jobs:
       - image: cimg/base:2022.06
     steps:
       - checkout
-      - restore_cache:
-          keys: [install-lint]
+      - attach_workspace:
+          at: ~/
       - run:
-          name: 'install-linters'
+          name: 'install-linters-lint-files'
           command: |
                     sudo apt-get update -y
                     sudo apt-get install -y tidy
                     sudo wget -O /bin/hadolint https://github.com/hadolint/hadolint/releases/download/v1.16.3/hadolint-Linux-x86_64 &&\
-                    sudo chmod +x /bin/hadolint
-      - save_cache:
-         paths: [app/caches]
-         key: install-lint
-
-  lint_files:
-    docker:
-      - image: cimg/base:2022.06
-    steps:
-      - checkout
-      - restore_cache:
-          keys: [install-lint]
-      - run:
-          name: 'run-lint'
-          command: |
-                   hadolint Dockerfile
-                   tidy -e -q **/*.html
+                    sudo chmod +x /bin/hadolint &&\
+                    hadolint Dockerfile &&\
+                    tidy -e -q **/*.html
+                  
 
   build-docker-app:
     docker:
@@ -105,6 +89,5 @@ workflows:
       - build-local-app
       - install_linters:
           requires: [build-local-app]
-      - lint_files:
+      - build-docker-app:
           requires: [install_linters]
-      - build-docker-app
