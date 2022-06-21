@@ -2,28 +2,85 @@ version: 2.1
 jobs:
   print_hello:
     docker:
-      - image: circleci/node:13.8.0
+      - image: cimg/base:2022.06
     steps:
       - checkout
       - run:
           name: "Say hello"
           command: "echo Hello, World!"
           
-  install_linters_lint_files:
+  build-local-app:
     docker:
       - image: cimg/base:2022.06
     steps:
       - checkout
+      - restore_cache:
+          keys: [local-build]
       - run:
-          name: install-linters
+         name:'install nginx'
+         command: |
+                  sudo apt-get update -y
+                  sudo apt-get install -y nginx
+      -run:
+         name:'build-app-locally'
+         command: |
+                  sudo cp /app/nginx/nginx.conf /etc/nginx/nginx.conf
+                  sudo cp /app/site-content/index.html /usr/share/nginx/html/index.html
+      -run:
+         name:'run-local-app'
+         command: |
+                  sudo service nginx start
+      -save_cache:
+         paths: [app/caches]
+         key: local-build
+
+  test-local-app:
+    docker:
+      - image: cimg/base:2022.06
+    steps:
+      - checkout
+      - restore_cache:
+          keys: [local-build]
+      -run:
+         name:'test-local-app'
+         command: |
+                  if [curl -s http://localhost:80/ | grep "Hello"]; then
+                  return 1
+                  else
+                  return 0
+                  fi
+                  
+  install_linters:
+    docker:
+      - image: cimg/base:2022.06
+    steps:
+      - checkout
+       - restore_cache:
+          keys: [install-lint]
+      - run:
+          name: 'install-linters'
           command: |
-                    # sudo apt-get update -y
-                    # sudo apt-get install -y tidy
+                    sudo apt-get update -y
+                    sudo apt-get install -y tidy
                     sudo wget -O /bin/hadolint https://github.com/hadolint/hadolint/releases/download/v1.16.3/hadolint-Linux-x86_64 &&\
-                    sudo chmod +x /bin/hadolint &&\
-                    hadolint Dockerfile
-                    # tidy -e -q **/*.html
-  
+                    sudo chmod +x /bin/hadolint
+      -save_cache:
+         paths: [app/caches]
+         key: install-lint
+
+  lint_files:
+    docker:
+      - image: cimg/base:2022.06
+    steps:
+      - checkout
+       - restore_cache:
+          keys: [install-lint]
+      - run:
+          name: 'run-lint'
+          command: |
+                   hadolint Dockerfile
+                   tidy -e -q **/*.html
+
   build-docker-app:
     docker:
       - image: docker:stable
@@ -48,5 +105,8 @@ workflows:
   default:
     jobs:
       - print_hello
-      - install_linters_lint_files
+      - build-local-app
+      - test-local-app
+      - install_linters
+      - lint_files
       - build-docker-app
