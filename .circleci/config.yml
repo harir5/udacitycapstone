@@ -8,6 +8,22 @@ jobs:
       - run:
           name: "Say hello"
           command: "echo Hello, World!"
+          
+  install_linters_lint_files:
+    docker:
+      - image: cimg/base:2022.06
+    steps:
+      - checkout
+      - run:
+          name: install-linters
+          command: |
+                    # sudo apt-get update -y
+                    # sudo apt-get install -y tidy
+                    sudo wget -O /bin/hadolint https://github.com/hadolint/hadolint/releases/download/v1.16.3/hadolint-Linux-x86_64 &&\
+                    sudo chmod +x /bin/hadolint &&\
+                    hadolint Dockerfile
+                    # tidy -e -q **/*.html
+  
   build-docker-app:
     docker:
       - image: docker:stable
@@ -27,24 +43,10 @@ jobs:
                     docker login -u harihr5 --password '$ockerudacity'
                     docker tag udacitycapstone $dockerpath:udacitycapstone
                     docker push $dockerpath:udacitycapstone
-  
-  install_linters_lint_files:
-    docker:
-      - image: cimg/base:2022.06
-    steps:
-      - checkout
-      - run:
-          name: install-linters
-          command: |
-                    # sudo apt-get update -y
-                    # sudo apt-get install -y tidy
-                    sudo wget -O /bin/hadolint https://github.com/hadolint/hadolint/releases/download/v1.16.3/hadolint-Linux-x86_64 &&\
-                    sudo chmod +x /bin/hadolint &&\
-                    hadolint Dockerfile
-                    # tidy -e -q *.html
             
 workflows:
   default:
     jobs:
       - print_hello
+      - install_linters_lint_files
       - build-docker-app
