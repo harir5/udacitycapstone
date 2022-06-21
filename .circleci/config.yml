@@ -24,8 +24,8 @@ jobs:
       - run:
          name: 'build-app-locally'
          command: |
-                  sudo cp /app/nginx/nginx.conf /etc/nginx/nginx.conf
-                  sudo cp /app/site-content/index.html /usr/share/nginx/html/index.html
+                  sudo cp ./app/nginx/nginx.conf /etc/nginx/nginx.conf
+                  sudo cp ./app/site-content/index.html /usr/share/nginx/html/index.html
       - run:
          name: 'run-local-app'
          command: |
