@@ -50,10 +50,12 @@ jobs:
       - run:
          name: 'test-local-app'
          command: |
-                  if [curl -s http://localhost:80/ | grep "Hello"]; then
-                  return 1
+                  export URL="http://localhost:80"
+                  if curl "${URL}" | grep "Hello"
+                  then
+                    return 0
                   else
-                  return 0
+                   return 1
                   fi
                   
   install_linters:
