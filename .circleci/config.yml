@@ -30,7 +30,7 @@ jobs:
          name: 'run-local-app'
          command: |
                   sudo service nginx start
-      -save_cache:
+      - save_cache:
          paths: [app/caches]
          key: local-build
 
@@ -55,7 +55,7 @@ jobs:
       - image: cimg/base:2022.06
     steps:
       - checkout
-       - restore_cache:
+      - restore_cache:
           keys: [install-lint]
       - run:
           name: 'install-linters'
@@ -64,7 +64,7 @@ jobs:
                     sudo apt-get install -y tidy
                     sudo wget -O /bin/hadolint https://github.com/hadolint/hadolint/releases/download/v1.16.3/hadolint-Linux-x86_64 &&\
                     sudo chmod +x /bin/hadolint
-      -save_cache:
+      - save_cache:
          paths: [app/caches]
          key: install-lint
 
@@ -73,7 +73,7 @@ jobs:
       - image: cimg/base:2022.06
     steps:
       - checkout
-       - restore_cache:
+      - restore_cache:
           keys: [install-lint]
       - run:
           name: 'run-lint'
@@ -106,7 +106,10 @@ workflows:
     jobs:
       - print_hello
       - build-local-app
-      - test-local-app
-      - install_linters
-      - lint_files
+      - test-local-app:
+          requires: [build-local-app]
+      - install_linters:
+          requires: [test-local-app]
+      - lint_files:
+          requires: [install_linters]
       - build-docker-app
