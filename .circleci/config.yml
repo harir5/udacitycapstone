@@ -21,32 +21,17 @@ jobs:
          command: |
                   sudo apt-get update -y
                   sudo apt-get install -y nginx
+                  sudo apt-get install -y curl
+                  curl --version
       - run:
          name: 'build-app-locally'
          command: |
-                  sudo cp ./app/nginx/nginx.conf /etc/nginx/nginx.conf
-                  sudo cp ./app/site-content/index.html /usr/share/nginx/html/index.html
+                  sudo cp ./nginx.conf /etc/nginx/nginx.conf
+                  sudo cp -r ./www /www
       - run:
          name: 'run-local-app'
          command: |
                   sudo service nginx start
-      - save_cache:
-         paths: [app/caches]
-         key: local-build
-
-  test-local-app:
-    docker:
-      - image: cimg/base:2022.06
-    steps:
-      - checkout
-      - restore_cache:
-          keys: [local-build]
-      - run:
-         name: 'install curl'
-         command: |
-                  sudo apt-get update -y
-                  sudo apt-get install -y curl
-                  curl --version
       - run:
          name: 'test-local-app'
          command: |
@@ -57,7 +42,11 @@ jobs:
                   else
                    return 1
                   fi
-                  
+      - save_cache:
+         paths: [app/caches]
+         key: local-build
+
+
   install_linters:
     docker:
       - image: cimg/base:2022.06
@@ -114,10 +103,8 @@ workflows:
     jobs:
       - print_hello
       - build-local-app
-      - test-local-app:
-          requires: [build-local-app]
       - install_linters:
-          requires: [test-local-app]
+          requires: [build-local-app]
       - lint_files:
           requires: [install_linters]
       - build-docker-app

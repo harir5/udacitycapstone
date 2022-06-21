@@ -1,8 +1,8 @@
 FROM nginx:stable
 
-COPY /app/nginx/nginx.conf /etc/nginx/nginx.conf
+COPY nginx.conf /etc/nginx/nginx.conf
 
-COPY /app/site-content/index.html /usr/share/nginx/html/index.html
+COPY ./www www
 
 EXPOSE 80
 
