@@ -130,11 +130,14 @@ jobs:
       - run:
           name: 'deploy to cluster'
           command: |
-                  kubectl create deploy udacitycapstone --image=harihr5/udacitycapstonerepo:udacitycapstone
+                  kubectl create deployment udacitycapstone --image=harihr5/udacitycapstonerepo:udacitycapstone
       - run:
           name: 'Check deployments'
           command: |
                   kubectl get deploy,rs,svc,pods
+                  kubectl get deployments
+                  kubectl config view
+                  kubectl expose deployment udacitycapstone --type=LoadBalancer --port=80
                   kubectl get svc udacitycapstone -o json
     
                               
