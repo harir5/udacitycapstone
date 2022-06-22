@@ -135,6 +135,7 @@ jobs:
           name: 'Check deployments'
           command: |
                   kubectl get deploy,rs,svc,pods
+                  kubectl get svc udacitycapstone -o json
     
                               
 workflows:
