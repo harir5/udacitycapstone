@@ -104,6 +104,34 @@ jobs:
           node-type: t2.micro
           nodes-max: 2
           
+  deploy_app_in_kubernates:
+    docker:
+      - image: cimg/base:2022.06
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ~/
+      - run:
+          name: 'install-kubectl'
+          command: |
+                    sudo curl -o kubectl https://s3.us-west-2.amazonaws.com/amazon-eks/1.22.6/2022-03-09/bin/linux/amd64/kubectl
+                    sudo chmod +x ./kubectl
+                    mkdir -p $HOME/bin && cp ./kubectl $HOME/bin/kubectl && export PATH=$PATH:$HOME/bin
+      - run:
+          name: 'get kubectl nodes'
+          command: |
+                  kubectl version --short --client
+                  kubectl get nodes
+      - run:
+          name: 'deploy to cluster'
+          command: |
+                  kubectl create deploy udacitycapstone --image=harihr5/udacitycapstonerepo:udacitycapstone
+      - run:
+          name: 'Check deployments'
+          command: |
+                  kubectl get deploy,rs,svc,pods
+    
+                              
 workflows:
   default:
     jobs:
@@ -116,3 +144,5 @@ workflows:
       - create-eksctl-cluster:
           cluster-name: udacitycapstonecluster
           requires: [build-docker-app]
+      - deploy_app_in_kubernates:
+          requires: [create-eksctl-cluster]
