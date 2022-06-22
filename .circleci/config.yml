@@ -81,7 +81,19 @@ jobs:
                     docker login -u harihr5 --password '$ockerudacity'
                     docker tag udacitycapstone $dockerpath:udacitycapstone
                     docker push $dockerpath:udacitycapstone
-            
+                    
+   create-eksctl-cluster:
+    docker:
+      - image: amazon/aws-cli
+    steps:
+      - checkout
+      - run:
+          name: 'create eksctl cluster'
+          command: |
+                   eksctl create cluster --region us-east-1 \
+                   --node-type t2.small --nodes-min 1 --nodes-max 2  \
+                   --name udacitycapstoneproject
+      
 workflows:
   default:
     jobs:
@@ -91,3 +103,5 @@ workflows:
           requires: [build-local-app]
       - build-docker-app:
           requires: [install_linters]
+      - create-eksctl-cluster:
+          requires: [build-docker-app]
