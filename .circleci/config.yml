@@ -125,7 +125,7 @@ jobs:
           name: 'get kubectl nodes'
           command: |
                   kubectl version --short --client
-                  aws eks update-kubeconfig --name udacitycapstonecluster
+                  aws eks update-kubeconfig --name udacitycapstonecluster --region us-east-1
                   kubectl get nodes
       - run:
           name: 'deploy to cluster'
