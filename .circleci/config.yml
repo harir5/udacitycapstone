@@ -87,10 +87,14 @@ jobs:
                     
   create-eksctl-cluster:
     executor: aws-eks/python3
-    steps:
-      - checkout
+    parameters:
+      cluster-name:
+        description: |
+          Name of the EKS cluster
+        type: string
+    steps:      
       - aws-eks/create-cluster:
-          cluster-name: capstonecluster
+          cluster-name: << parameters.cluster-name >>
           skip-kubectl-install: false
           show-eksctl-command: true
           verbose: 3
@@ -109,4 +113,5 @@ workflows:
       - build-docker-app:
           requires: [install_linters]
       - create-eksctl-cluster:
+          cluster-name: udacitycapstonecluster
           requires: [build-docker-app]
