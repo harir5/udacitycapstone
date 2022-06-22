@@ -86,8 +86,7 @@ jobs:
                     docker push $dockerpath:udacitycapstone
                     
   create-eksctl-cluster:
-    docker:
-      executor: aws-eks/python3
+    executor: aws-eks/python3
     parameters:
       cluster-name:
         description: |
