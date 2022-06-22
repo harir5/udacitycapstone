@@ -83,7 +83,7 @@ jobs:
                     docker push $dockerpath:udacitycapstone
                     
   create-eksctl-cluster:
-     docker:
+    docker:
       - image: cimg/base:2022.06
     steps:
       - checkout
