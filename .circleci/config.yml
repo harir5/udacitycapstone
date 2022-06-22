@@ -82,7 +82,7 @@ jobs:
                     docker tag udacitycapstone $dockerpath:udacitycapstone
                     docker push $dockerpath:udacitycapstone
                     
-   create-eksctl-cluster:
+  create-eksctl-cluster:
     docker:
       - image: amazon/aws-cli
     steps:
