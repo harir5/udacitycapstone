@@ -112,9 +112,9 @@ jobs:
       - run:
           name: 'create eksctl cluster'
           command: |
-                  # eksctl create cluster --region us-east-1 \
-                  # --node-type t2.small --nodes-min 1 --nodes-max 2  \
-                  # --name udacitycapstoneproject
+                   eksctl create cluster --region us-east-1 \
+                   --node-type t2.small --nodes-min 1 --nodes-max 2  \
+                   --name udacitycapstoneproject
       
 workflows:
   default:
