@@ -97,7 +97,7 @@ jobs:
       - aws-eks/create-cluster:
           cluster-name: << parameters.cluster-name >>
           aws-region: 'us-east-1'
-          zones: 'us-east-1a'
+          zones: 'us-east-1a,us-east-1b'
           skip-kubectl-install: false
           show-eksctl-command: true
           verbose: 3
