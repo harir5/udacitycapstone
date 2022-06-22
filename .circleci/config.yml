@@ -1,7 +1,7 @@
 version: 2.1
-    orbs:
-      aws-eks: circleci/aws-eks@2.2.0
-      kubernetes: circleci/kubernetes@1.3
+orbs:
+  aws-eks: circleci/aws-eks@2.2.0
+  kubernetes: circleci/kubernetes@1.3
 jobs:
   print_hello:
     docker:
@@ -105,38 +105,6 @@ jobs:
           ssh-access: true
           ssh-public-key: 'udacity-finalproject.pem'
           
-      
-jobs:
-  test-cluster:
-    docker:
-      - image: 'cimg/python:3.10'
-    parameters:
-      cluster-name:
-        description: |
-          Name of the EKS cluster
-        type: string
-    steps:
-      - kubernetes/install:
-          kubectl-version: v1.22.0
-      - aws-eks/update-kubeconfig-with-authenticator:
-          cluster-name: << parameters.cluster-name >>
-      - run:
-          command: |
-            kubectl get services
-          name: Test cluster
-workflows:
-  deployment:
-    jobs:
-      - aws-eks/create-cluster:
-          cluster-name: my-eks-demo
-      - test-cluster:
-          cluster-name: my-eks-demo
-          requires:
-            - aws-eks/create-cluster
-      - aws-eks/delete-cluster:
-          cluster-name: my-eks-demo
-          requires:
-            - test-cluster
 workflows:
   default:
     jobs:
