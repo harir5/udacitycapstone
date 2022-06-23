@@ -183,4 +183,4 @@ workflows:
       - deploy_app_in_kubernates:
           requires: [create-eksctl-cluster]
       - check_deployment:
-          requires:[deploy_app_in_kubernates]
+          requires: [deploy_app_in_kubernates]
