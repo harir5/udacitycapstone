@@ -106,8 +106,6 @@ jobs:
           node-type: t2.micro
           nodes-max: 2
           external-dns-access: true
-          ssh-access: true
-          ssh-public-key: '~/project/.circleci/files/udacity-finalproject.pem'
           
   deploy_app_in_kubernates:
     docker:
