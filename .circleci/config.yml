@@ -94,6 +94,8 @@ jobs:
           Name of the EKS cluster
         type: string
     steps:      
+      - attach_workspace:
+          at: ~/
       - aws-eks/create-cluster:
           cluster-name: << parameters.cluster-name >>
           aws-region: 'us-east-1'
@@ -105,7 +107,7 @@ jobs:
           nodes-max: 2
           external-dns-access: true
           ssh-access: true
-          ssh-public-key: '~/udacity-finalproject.pem'
+          ssh-public-key: '~/project/.circleci/files/udacity-finalproject.pem'
           
   deploy_app_in_kubernates:
     docker:
