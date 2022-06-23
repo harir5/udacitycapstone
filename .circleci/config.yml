@@ -103,7 +103,7 @@ jobs:
           verbose: 3
           node-type: t2.micro
           nodes-max: 2
-          external-dns-access:true
+          external-dns-access: true
           aws-profile : 'udacityiamuser'
           
   deploy_app_in_kubernates:
