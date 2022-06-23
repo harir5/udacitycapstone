@@ -172,14 +172,15 @@ workflows:
   default:
     jobs:
       - print_hello
-      # - build-local-app
-      # - install_linters:
-      #     requires: [build-local-app]
-      # - build-docker-app:
-      #     requires: [install_linters]
-      # - create-eksctl-cluster:
-      #     cluster-name: udacitycapstonecluster
-      #     requires: [build-docker-app]
-      # - deploy_app_in_kubernates:
-      #     requires: [create-eksctl-cluster]
-      - check_deployment
+      - build-local-app
+      - install_linters:
+          requires: [build-local-app]
+      - build-docker-app:
+          requires: [install_linters]
+      - create-eksctl-cluster:
+          cluster-name: udacitycapstonecluster
+          requires: [build-docker-app]
+      - deploy_app_in_kubernates:
+          requires: [create-eksctl-cluster]
+      - check_deployment:
+          requires:[deploy_app_in_kubernates]
