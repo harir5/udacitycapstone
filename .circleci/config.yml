@@ -103,6 +103,7 @@ jobs:
           verbose: 3
           node-type: t2.micro
           nodes-max: 2
+          external-dns-access: true
           
   deploy_app_in_kubernates:
     docker:
